@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "tsc --watch", 
-    "build": "tsc", 
+    "watch": "tsc --watch",
+    "build": "tsc",
     "start": "serve public"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "serve": "^13.0.2"
+  }
 }
