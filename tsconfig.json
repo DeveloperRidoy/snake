@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "esNext",
+    "target": "es5",
+    "lib": ["esNext", "dom"],
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "public/js",
+    "rootDir": "src/ts", 
+    
+  },
+  "exclude": ["node_modules/*"]
+}
