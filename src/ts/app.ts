@@ -21,7 +21,7 @@ function updateGame(currentTime: number) {
   game.update();
   if (game.gameOver) {
     if (confirm('Game over. Press ok to continue')) {
-      window.location.href = '/public'
+      window.location.href = '/'
       
     } else {
       return;
