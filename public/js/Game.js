@@ -9,23 +9,22 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { defaultDirection, defaultFood, defaultSnake, gameBoard, GRID_SIZE } from "./config.js";
-import { generateFood, generateSnake, isOutsideGrid, snakeIntersect, } from "./utils/functions.js";
+import { FOOD_COLOR, gameBoard, GRID_SIZE, HIGH_SCORE, SNAKE_COLOR } from "./config.js";
+import { updateFoodUI, updateSnakeUI, isOutsideGrid, randomPosition, snakeIntersect, updateScoreUI, updateButtonUI, randomDirection, randomEmptyPosition, } from "./utils/functions.js";
 var Game = (function () {
     function Game() {
-        this._food = defaultFood;
-        this._direction = defaultDirection;
-        this._snake = defaultSnake;
-        this._gameOver = false;
-        gameBoard.style.setProperty("--grid-size", String(GRID_SIZE));
-        generateSnake(this._snake);
-        this.randomlyChangeFoodPosition();
-        generateFood(this._food);
+        this._gameOver = true;
+        this.reset();
     }
-    Game.prototype.update = function () {
+    Game.prototype.updateLogic = function () {
         if (this.snakeOnPosition(this._food)) {
             this.growSnake();
-            this.randomlyChangeFoodPosition();
+            this._food = randomEmptyPosition(this._snake);
+            this._score += 1;
+            if (this._score > this._highScore) {
+                this._highScore = this._score;
+                localStorage.setItem("high-score", String(this._highScore));
+            }
         }
         for (var i = 1; i < this._snake.length; i++) {
             this._snake[i - 1] = __assign({}, this._snake[i]);
@@ -46,9 +45,20 @@ var Game = (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(Game.prototype, "score", {
+        get: function () {
+            return this._score;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(Game.prototype, "gameOver", {
         get: function () {
             return this._gameOver;
+        },
+        set: function (bool) {
+            this._gameOver = bool;
+            updateButtonUI(this._gameOver);
         },
         enumerable: false,
         configurable: true
@@ -68,26 +78,36 @@ var Game = (function () {
         configurable: true
     });
     Game.prototype.growSnake = function () {
-        var lastPart = this._snake[0];
+        var lastPart = __assign({}, this._snake[0]);
         this._snake.unshift(lastPart);
     };
     Game.prototype.snakeOnPosition = function (position) {
         return this._snake.some(function (part) { return part.x === position.x && part.y === position.y; });
     };
-    Game.prototype.randomlyChangeFoodPosition = function () {
-        var position = null;
-        while (position === null || this.snakeOnPosition(position)) {
-            position = {
-                x: Math.floor(Math.random() * 21) + 1,
-                y: Math.floor(Math.random() * 21) + 1,
-            };
-        }
-        this._food = position;
-    };
     Game.prototype.handleGameOver = function () {
         if (isOutsideGrid(this._snake) || snakeIntersect(this._snake)) {
             this._gameOver = true;
         }
+    };
+    Game.prototype.resetLogic = function () {
+        gameBoard.style.setProperty("--grid-size", String(GRID_SIZE));
+        gameBoard.style.setProperty("--snake-color", String(SNAKE_COLOR));
+        gameBoard.style.setProperty("--food-color", String(FOOD_COLOR));
+        this._direction = randomDirection();
+        this._snake = [randomPosition()];
+        this._food = randomEmptyPosition(this._snake);
+        this._score = 0;
+        this._highScore = HIGH_SCORE;
+    };
+    Game.prototype.updateUI = function () {
+        updateSnakeUI(this._snake);
+        updateFoodUI(this._food);
+        updateScoreUI(this._score, this._highScore);
+        updateButtonUI(this._gameOver);
+    };
+    Game.prototype.reset = function () {
+        this.resetLogic();
+        this.updateUI();
     };
     return Game;
 }());

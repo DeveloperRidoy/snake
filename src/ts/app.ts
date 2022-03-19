@@ -1,32 +1,43 @@
-import { gameBoard, SNAKE_SPEED } from "./config.js";
+import { gameBoard, SNAKE_SPEED} from "./config.js";
 import Game from "./Game.js";
-import { generateFood, generateSnake } from "./utils/functions.js";
 import userInput from "./utils/userInput.js";
 
 let prevTime = 0;
 
+// new game instance 
 const game = new Game();
 
+// setup user input 
 userInput(game);
 
+
+// only update game when window is active
 window.requestAnimationFrame(updateGame);
 
 function updateGame(currentTime: number) {
-  if (game.gameOver) return;
   let secondsPassed = (currentTime - prevTime) / 1000;
   window.requestAnimationFrame(updateGame);
+  
+  // don't proceed if game over 
+  if (game.gameOver) return;
+
+  // don't proceed if time is not enough for one snake movement
   if (secondsPassed < 1 / SNAKE_SPEED) return;
   prevTime = currentTime;
+  
+  // clear game board 
   gameBoard.innerHTML = "";
-  game.update();
+  
+  // update game logic
+  game.updateLogic();
+  
+  // check for game over after updating game logic 
   if (game.gameOver) {
-    if (confirm('Game over. Press ok to continue')) {
-      window.location.href = '/'
-      
-    } else {
-      return;
-    }
+    alert(`game over, your score is ${game.score}`) 
+    game.reset(); 
   }
-  generateSnake(game.snake);
-  generateFood(game.food);
+
+  // update UI
+  game.updateUI();
 }
+

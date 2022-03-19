@@ -1,6 +1,9 @@
 export const GRID_SIZE = 21;
 export const SNAKE_SPEED = 5;
 export const gameBoard = document.getElementById('game-board')
-export const defaultSnake = [{ x: 9, y: 11 }];
-export const defaultFood = { x: 15, y: 11 };;
-export const defaultDirection = { x: 1, y: 0 };
+export const toggleBtn = document.getElementById('toggle-btn');
+export const HIGH_SCORE = Number(localStorage.getItem("high-score"));
+export const ScoreElement = document.getElementById('score');
+export const highScoreElement = document.getElementById('high-score');
+export const SNAKE_COLOR = "hsl(200, 100%, 50%)";
+export const FOOD_COLOR = "hsl(50, 100%, 50%)";

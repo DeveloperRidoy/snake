@@ -10,7 +10,17 @@
     </head>
 
     <body>
-        <div id="game-board">
+        <div class="container">
+            <div class="menu">
+                <div class="menu-section">
+                    <div>score: <span id="score">0</span></div> 
+                    <div>highscore: <span id="high-score">0</span></div> 
+                   <button class="settings"><img src="icons/settings.svg" alt="settings"></button>
+                </div>
+                <button id="toggle-btn">start</button>
+            </div>
+            <div id="game-board">
+            </div>
         </div>
         <script src="js/app.js" defer type="module"></script>
     </body>

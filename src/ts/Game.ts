@@ -1,37 +1,57 @@
-import { defaultDirection, defaultFood, defaultSnake, gameBoard, GRID_SIZE } from "./config.js";
+import { FOOD_COLOR, gameBoard, GRID_SIZE, HIGH_SCORE, SNAKE_COLOR } from "./config.js";
 import {
-  generateFood,
-  generateSnake,
+  updateFoodUI,
+  updateSnakeUI,
   isOutsideGrid,
+  randomPosition,
   snakeIntersect,
+  updateScoreUI,
+  updateButtonUI,
+  randomDirection,
+  randomEmptyPosition,
 } from "./utils/functions.js";
-import { Position } from "./utils/types.js";
+import { Direction, Position, Snake } from "./utils/types.js";
 
 export default class Game {
-  private _food: Position = defaultFood;
-  private _direction: Position = defaultDirection;
-  private _snake: Position[] = defaultSnake;
-  private _gameOver: boolean = false;
+  private _direction: Direction;
+  private _snake: Snake;
+  private _food: Position;
+  private _gameOver: boolean = true;
+  private _score: number;
+  private _highScore: number;
 
   constructor() {
-    gameBoard.style.setProperty("--grid-size", String(GRID_SIZE));
-    generateSnake(this._snake);
-    this.randomlyChangeFoodPosition();
-    generateFood(this._food);
+    // set game logic and UI on first initialization
+    this.reset();
   }
 
-  update() {
+  updateLogic() {
+    // handle eating food
     if (this.snakeOnPosition(this._food)) {
+      // grow snake
       this.growSnake();
-      this.randomlyChangeFoodPosition();
+
+      // change food position after eating food
+      this._food = randomEmptyPosition(this._snake);
+
+      // update score
+      this._score += 1;
+
+      // update high score if exceeds current
+      if (this._score > this._highScore) {
+        this._highScore = this._score;
+        localStorage.setItem("high-score", String(this._highScore));
+      }
     }
 
+    // update snake position
     for (let i = 1; i < this._snake.length; i++) {
       this._snake[i - 1] = { ...this._snake[i] };
     }
     this._snake[this._snake.length - 1].x += this._direction.x;
     this._snake[this._snake.length - 1].y += this._direction.y;
 
+    // handle game over for current snake position
     this.handleGameOver();
   }
 
@@ -39,13 +59,22 @@ export default class Game {
     return this._direction;
   }
 
-  set direction({ x, y }: Position) {
+  set direction({ x, y }: Direction) {
     this._direction.x = x;
     this._direction.y = y;
   }
 
+  get score() {
+    return this._score;
+  }
+
   get gameOver() {
     return this._gameOver;
+  }
+
+  set gameOver(bool) {
+    this._gameOver = bool;
+    updateButtonUI(this._gameOver);
   }
 
   get snake() {
@@ -57,7 +86,7 @@ export default class Game {
   }
 
   private growSnake() {
-    const lastPart = this._snake[0];
+    const lastPart = { ...this._snake[0] };
     this._snake.unshift(lastPart);
   }
 
@@ -67,21 +96,40 @@ export default class Game {
     );
   }
 
-  private randomlyChangeFoodPosition() {
-    let position: Position = null;
-    while (position === null || this.snakeOnPosition(position)) {
-      position = {
-        x: Math.floor(Math.random() * 21) + 1,
-        y: Math.floor(Math.random() * 21) + 1,
-      };
-    }
-
-    this._food = position;
-  }
-
   private handleGameOver() {
     if (isOutsideGrid(this._snake) || snakeIntersect(this._snake)) {
       this._gameOver = true;
     }
+  }
+
+  private resetLogic() {
+    gameBoard.style.setProperty("--grid-size", String(GRID_SIZE));
+    gameBoard.style.setProperty("--snake-color", String(SNAKE_COLOR));
+    gameBoard.style.setProperty("--food-color", String(FOOD_COLOR));
+    this._direction = randomDirection();
+    this._snake = [randomPosition()];
+    this._food = randomEmptyPosition(this._snake);
+    this._score = 0;
+    this._highScore = HIGH_SCORE;
+  }
+
+  // update UI
+  updateUI() {
+    // update snake position
+    updateSnakeUI(this._snake);
+
+    // update food position
+    updateFoodUI(this._food);
+
+    // update score
+    updateScoreUI(this._score, this._highScore);
+
+    // update start/stop button
+    updateButtonUI(this._gameOver);
+  }
+
+  reset() {
+    this.resetLogic();
+    this.updateUI();
   }
 }

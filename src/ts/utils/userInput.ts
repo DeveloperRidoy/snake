@@ -1,8 +1,11 @@
+import { toggleBtn } from "../config.js";
 import Game from "../Game.js";
 
 export default function userInput(game: Game) {
     document.addEventListener('keydown', inputHandler)
-    
+    toggleBtn.addEventListener('click', () => {
+        game.gameOver = game.gameOver ? false : true;
+    })    
     function inputHandler(e: KeyboardEvent) {
       switch (e.key) {
           case "ArrowUp":

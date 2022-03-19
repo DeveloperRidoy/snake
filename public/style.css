@@ -1,34 +1,120 @@
+@import url(./fonts//Poppins-Regular.ttf);
+
+:root {
+  --mobile-font-size: 4vmin;
+  --font-size: 3vmin;
+  --font-family: "Poppins", sans-serif;
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
 }
 
 body {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #34495e;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #34495e;
 }
 
 #game-board {
-    background-color: #fff;
-    display: grid;
-    height: 100vmin; 
-    width: 100vmin;
-    grid-template-columns: repeat(var(--grid-size), 1fr);
-    grid-template-rows: repeat(var(--grid-size), 1fr);
+  background-color: #fff;
+  display: grid;
+  height: 80vmin;
+  width: 80vmin;
+  grid-template-columns: repeat(var(--grid-size), 1fr);
+  grid-template-rows: repeat(var(--grid-size), 1fr);
 }
 
+@media screen and (max-width: 500px) {
+  * {
+    font-size: var(--mobile-font-size);
+  }
+  #game-board {
+    width: 95vmin;
+    height: 95vmin;
+  }
+}
 
 .snake {
-    background-color: hsl(200, 100%, 50%);
-    border: .2vmin solid black;
-    position: static;
+  background-color: var(--snake-color);
+  border: 0.2vmin solid black;
+  position: static;
+  z-index: 10;
 }
 
 .food {
-    background-color: hsl(50, 100%, 50%);
-    border: .2vmin solid black;
+  background-color: var(--food-color);
+  border: 0.2vmin solid black;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 3vmin;
+  font-size: var(--font-size);
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: capitalize;
+}
+
+.settings {
+  height: 5vmin;
+  width: 5vmin;
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  transform: rotate(0deg);
+  transition: all 0.2s ease-in-out;
+}
+
+.settings:active {
+  transform: scale(0.5);
+}
+
+.settings:hover {
+  cursor: pointer;
+  transform: rotate(90deg);
+}
+
+.menu-section {
+  display: flex;
+  align-items: center;
+  gap: 3vmin;
+  color: hsl(240, 8%, 72%);
+}
+
+.menu-section > div {
+  background-color: #fff;
+  padding: 1vmin 3vmin;
+}
+
+#score,
+#high-score {
+  color: black;
+}
+
+#toggle-btn {
+  background-color: white;
+  border: 0;
+  font-size: var(--font-size);
+  padding: 1vmin 3vmin;
+  text-transform: capitalize;
+  transition: 0.2s;
+}
+
+#toggle-btn:hover {
+  cursor: pointer;
+}
+
+#toggle-btn:active {
+  background-color: rgb(231, 231, 231);
 }
