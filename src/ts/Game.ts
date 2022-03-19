@@ -1,16 +1,28 @@
-import { FOOD_COLOR, gameBoard, GRID_SIZE, HIGH_SCORE, SNAKE_COLOR } from "./config.js";
+import {
+  backdrop,
+  foodColorInput,
+  FOOD_COLOR,
+  gameBoard,
+  GRID_SIZE,
+  HIGH_SCORE,
+  settingsMenu,
+  snakeColorInput,
+  snakeGrowthSpeedInput,
+  snakeSpeedInput,
+  SNAKE_COLOR,
+  SNAKE_GROWTH_RATE,
+  SNAKE_SPEED,
+} from "./config.js";
 import {
   updateFoodUI,
   updateSnakeUI,
   isOutsideGrid,
-  randomPosition,
   snakeIntersect,
   updateScoreUI,
   updateButtonUI,
-  randomDirection,
   randomEmptyPosition,
 } from "./utils/functions.js";
-import { Direction, Position, Snake } from "./utils/types.js";
+import { Direction, Position, Settings, Snake } from "./utils/types.js";
 
 export default class Game {
   private _direction: Direction;
@@ -19,6 +31,7 @@ export default class Game {
   private _gameOver: boolean = true;
   private _score: number;
   private _highScore: number;
+  private _settings: Settings;
 
   constructor() {
     // set game logic and UI on first initialization
@@ -29,7 +42,7 @@ export default class Game {
     // handle eating food
     if (this.snakeOnPosition(this._food)) {
       // grow snake
-      this.growSnake();
+      this.growSnake(this.settings.snakeGrowthRate);
 
       // change food position after eating food
       this._food = randomEmptyPosition(this._snake);
@@ -64,6 +77,47 @@ export default class Game {
     this._direction.y = y;
   }
 
+  get settings() {
+    return this._settings;
+  }
+
+  set settings(settings: Settings) {
+    // update settings info
+    this._settings = settings;
+
+    const {
+      gridSize,
+      snakeColor,
+      foodColor,
+      snakeSpeed,
+      snakeGrowthRate,
+      showMenu,
+    } = settings;
+    // update related DOM elements
+    gameBoard.style.setProperty("--grid-size", String(gridSize));
+    gameBoard.style.setProperty("--snake-color", String(snakeColor));
+    gameBoard.style.setProperty("--food-color", String(foodColor));
+
+    snakeSpeedInput.value = String(snakeSpeed);
+    snakeGrowthSpeedInput.value = String(snakeGrowthRate);
+    snakeColorInput.value = String(snakeColor);
+    foodColorInput.value = String(foodColor);
+
+    if (showMenu) {
+      settingsMenu.classList.remove("hidden");
+      backdrop.classList.remove("hidden");
+    } else {
+      settingsMenu.classList.add("hidden");
+      backdrop.classList.add("hidden");
+    }
+
+    // update settings in localStorage
+    localStorage.setItem("snake-speed", String(snakeSpeed));
+    localStorage.setItem("snake-growth-rate", String(snakeGrowthRate));
+    localStorage.setItem("snake-color", String(snakeColor));
+    localStorage.setItem("food-color", String(foodColor));
+  }
+
   get score() {
     return this._score;
   }
@@ -85,9 +139,11 @@ export default class Game {
     return this._food;
   }
 
-  private growSnake() {
+  private growSnake(growthRate: number) {
     const lastPart = { ...this._snake[0] };
-    this._snake.unshift(lastPart);
+    for (let i = 1; i <= growthRate; i++) {
+      this._snake.unshift(lastPart);
+    }
   }
 
   private snakeOnPosition(position: Position) {
@@ -103,11 +159,17 @@ export default class Game {
   }
 
   private resetLogic() {
-    gameBoard.style.setProperty("--grid-size", String(GRID_SIZE));
-    gameBoard.style.setProperty("--snake-color", String(SNAKE_COLOR));
-    gameBoard.style.setProperty("--food-color", String(FOOD_COLOR));
-    this._direction = randomDirection();
-    this._snake = [randomPosition()];
+    this.settings = {
+      gridSize: GRID_SIZE,
+      showMenu: false,
+      snakeGrowthRate: SNAKE_GROWTH_RATE,
+      snakeSpeed: SNAKE_SPEED,
+      snakeColor: SNAKE_COLOR,
+      foodColor: FOOD_COLOR,
+    };
+
+    this._direction = { x: 1, y: 0 };
+    this._snake = [{ x: 11, y: 11 }];
     this._food = randomEmptyPosition(this._snake);
     this._score = 0;
     this._highScore = HIGH_SCORE;

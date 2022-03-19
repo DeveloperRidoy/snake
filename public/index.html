@@ -13,13 +13,42 @@
         <div class="container">
             <div class="menu">
                 <div class="menu-section">
-                    <div>score: <span id="score">0</span></div> 
-                    <div>highscore: <span id="high-score">0</span></div> 
-                   <button class="settings"><img src="icons/settings.svg" alt="settings"></button>
+                    <div>score: <span id="score">0</span></div>
+                    <div>highscore: <span id="high-score">0</span></div>
+                    <button id="settings-show-btn"><img src="icons/settings.svg" alt="settings"></button>
                 </div>
                 <button id="toggle-btn">start</button>
             </div>
             <div id="game-board">
+            </div>
+        </div>
+        <div id="backdrop" class="hidden">ffffff</div>
+        <div id="settings-menu" class="hidden">
+            <h2>Settings</h2>
+            
+            <div class="divider"></div>
+            <div class="items">
+                <div class="item">
+                    <p>Snake speed (1-10)</p>
+                    <input type="number" id="snake-speed" min="1" max="10" />
+                </div>
+                <div class="item">
+                    <p>Snake growth rate (1-10)</p>
+                    <input type="number" id="snake-growth-speed" min="1" max="10" />
+                </div>
+                <div class="item">
+                    <p>Snake color</p>
+                    <input type="color" id="snake-color">
+                </div>
+                <div class="item">
+                    <p>Food color</p>
+                    <input type="color" id="food-color">
+                </div> 
+                <div class="footer">
+                    <div id="settings-close-btn">Close</div>
+                    <button id="settings-update-btn">Update</button>
+                </div>
+                
             </div>
         </div>
         <script src="js/app.js" defer type="module"></script>

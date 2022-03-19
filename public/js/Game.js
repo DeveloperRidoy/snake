@@ -9,8 +9,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { FOOD_COLOR, gameBoard, GRID_SIZE, HIGH_SCORE, SNAKE_COLOR } from "./config.js";
-import { updateFoodUI, updateSnakeUI, isOutsideGrid, randomPosition, snakeIntersect, updateScoreUI, updateButtonUI, randomDirection, randomEmptyPosition, } from "./utils/functions.js";
+import { backdrop, foodColorInput, FOOD_COLOR, gameBoard, GRID_SIZE, HIGH_SCORE, settingsMenu, snakeColorInput, snakeGrowthSpeedInput, snakeSpeedInput, SNAKE_COLOR, SNAKE_GROWTH_RATE, SNAKE_SPEED, } from "./config.js";
+import { updateFoodUI, updateSnakeUI, isOutsideGrid, snakeIntersect, updateScoreUI, updateButtonUI, randomEmptyPosition, } from "./utils/functions.js";
 var Game = (function () {
     function Game() {
         this._gameOver = true;
@@ -18,7 +18,7 @@ var Game = (function () {
     }
     Game.prototype.updateLogic = function () {
         if (this.snakeOnPosition(this._food)) {
-            this.growSnake();
+            this.growSnake(this.settings.snakeGrowthRate);
             this._food = randomEmptyPosition(this._snake);
             this._score += 1;
             if (this._score > this._highScore) {
@@ -41,6 +41,36 @@ var Game = (function () {
             var x = _a.x, y = _a.y;
             this._direction.x = x;
             this._direction.y = y;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Game.prototype, "settings", {
+        get: function () {
+            return this._settings;
+        },
+        set: function (settings) {
+            this._settings = settings;
+            var gridSize = settings.gridSize, snakeColor = settings.snakeColor, foodColor = settings.foodColor, snakeSpeed = settings.snakeSpeed, snakeGrowthRate = settings.snakeGrowthRate, showMenu = settings.showMenu;
+            gameBoard.style.setProperty("--grid-size", String(gridSize));
+            gameBoard.style.setProperty("--snake-color", String(snakeColor));
+            gameBoard.style.setProperty("--food-color", String(foodColor));
+            snakeSpeedInput.value = String(snakeSpeed);
+            snakeGrowthSpeedInput.value = String(snakeGrowthRate);
+            snakeColorInput.value = String(snakeColor);
+            foodColorInput.value = String(foodColor);
+            if (showMenu) {
+                settingsMenu.classList.remove("hidden");
+                backdrop.classList.remove("hidden");
+            }
+            else {
+                settingsMenu.classList.add("hidden");
+                backdrop.classList.add("hidden");
+            }
+            localStorage.setItem("snake-speed", String(snakeSpeed));
+            localStorage.setItem("snake-growth-rate", String(snakeGrowthRate));
+            localStorage.setItem("snake-color", String(snakeColor));
+            localStorage.setItem("food-color", String(foodColor));
         },
         enumerable: false,
         configurable: true
@@ -77,9 +107,11 @@ var Game = (function () {
         enumerable: false,
         configurable: true
     });
-    Game.prototype.growSnake = function () {
+    Game.prototype.growSnake = function (growthRate) {
         var lastPart = __assign({}, this._snake[0]);
-        this._snake.unshift(lastPart);
+        for (var i = 1; i <= growthRate; i++) {
+            this._snake.unshift(lastPart);
+        }
     };
     Game.prototype.snakeOnPosition = function (position) {
         return this._snake.some(function (part) { return part.x === position.x && part.y === position.y; });
@@ -90,11 +122,16 @@ var Game = (function () {
         }
     };
     Game.prototype.resetLogic = function () {
-        gameBoard.style.setProperty("--grid-size", String(GRID_SIZE));
-        gameBoard.style.setProperty("--snake-color", String(SNAKE_COLOR));
-        gameBoard.style.setProperty("--food-color", String(FOOD_COLOR));
-        this._direction = randomDirection();
-        this._snake = [randomPosition()];
+        this.settings = {
+            gridSize: GRID_SIZE,
+            showMenu: false,
+            snakeGrowthRate: SNAKE_GROWTH_RATE,
+            snakeSpeed: SNAKE_SPEED,
+            snakeColor: SNAKE_COLOR,
+            foodColor: FOOD_COLOR,
+        };
+        this._direction = { x: 1, y: 0 };
+        this._snake = [{ x: 11, y: 11 }];
         this._food = randomEmptyPosition(this._snake);
         this._score = 0;
         this._highScore = HIGH_SCORE;

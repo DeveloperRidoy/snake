@@ -2,7 +2,7 @@ import {
   gameBoard,
   GRID_SIZE,
   highScoreElement,
-  ScoreElement,
+  scoreElement,
   toggleBtn,
 } from "../config.js";
 import { Direction, Position, Snake } from "./types.js";
@@ -43,7 +43,7 @@ export function snakeIntersect(snake: Snake) {
 }
 
 export function updateScoreUI(score: number, highScore: number) {
-  ScoreElement.innerText = String(score);
+  scoreElement.innerText = String(score);
   highScoreElement.innerText = String(highScore);
 }
 
@@ -68,6 +68,7 @@ export const randomEmptyPosition = (snake: Snake): Position => {
 
 export const updateButtonUI = (gameOver: boolean) => {
   toggleBtn.innerText = gameOver ? "start" : "stop";
+
 };
 
 export function randomDirection(): Direction {

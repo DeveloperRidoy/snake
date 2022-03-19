@@ -1,4 +1,4 @@
-import { gameBoard, GRID_SIZE, highScoreElement, ScoreElement, toggleBtn, } from "../config.js";
+import { gameBoard, GRID_SIZE, highScoreElement, scoreElement, toggleBtn, } from "../config.js";
 export function updateSnakeUI(snake) {
     snake.forEach(function (position) {
         generateElement(position.x, position.y, "snake");
@@ -29,7 +29,7 @@ export function snakeIntersect(snake) {
     });
 }
 export function updateScoreUI(score, highScore) {
-    ScoreElement.innerText = String(score);
+    scoreElement.innerText = String(score);
     highScoreElement.innerText = String(highScore);
 }
 export var randomPosition = function () {

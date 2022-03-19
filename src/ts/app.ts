@@ -1,6 +1,6 @@
 import { gameBoard, SNAKE_SPEED} from "./config.js";
 import Game from "./Game.js";
-import userInput from "./utils/userInput.js";
+import userInput from "./utils/userInput/userInput.js";
 
 let prevTime = 0;
 
@@ -22,7 +22,7 @@ function updateGame(currentTime: number) {
   if (game.gameOver) return;
 
   // don't proceed if time is not enough for one snake movement
-  if (secondsPassed < 1 / SNAKE_SPEED) return;
+  if (secondsPassed < 1 / game.settings.snakeSpeed) return;
   prevTime = currentTime;
   
   // clear game board 
@@ -40,4 +40,3 @@ function updateGame(currentTime: number) {
   // update UI
   game.updateUI();
 }
-

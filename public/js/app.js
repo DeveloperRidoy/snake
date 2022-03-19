@@ -1,6 +1,6 @@
-import { gameBoard, SNAKE_SPEED } from "./config.js";
+import { gameBoard } from "./config.js";
 import Game from "./Game.js";
-import userInput from "./utils/userInput.js";
+import userInput from "./utils/userInput/userInput.js";
 var prevTime = 0;
 var game = new Game();
 userInput(game);
@@ -10,7 +10,7 @@ function updateGame(currentTime) {
     window.requestAnimationFrame(updateGame);
     if (game.gameOver)
         return;
-    if (secondsPassed < 1 / SNAKE_SPEED)
+    if (secondsPassed < 1 / game.settings.snakeSpeed)
         return;
     prevTime = currentTime;
     gameBoard.innerHTML = "";
