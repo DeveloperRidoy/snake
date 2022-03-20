@@ -17,5 +17,5 @@ export var HIGH_SCORE = Number(localStorage.getItem("high-score")) || 0;
 export var SNAKE_COLOR = localStorage.getItem("snake-color") || "#00AAFF";
 export var FOOD_COLOR = localStorage.getItem("food-color") || "#FFD500";
 export var SNAKE_GROWTH_RATE = Number(localStorage.getItem("snake-growth-rate")) || 1;
-export var SWIPE_THRESHHOLD = 100;
+export var SWIPE_THRESHHOLD = 50;
 //# sourceMappingURL=config.js.map
