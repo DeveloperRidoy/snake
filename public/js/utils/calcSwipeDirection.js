@@ -1,4 +1,4 @@
-import { Movement } from "./types";
+import { Movement } from "./types.js";
 export default function calcSwipeDirection(_a) {
     var touchStartX = _a.touchStartX, touchEndX = _a.touchEndX, touchStartY = _a.touchStartY, touchEndY = _a.touchEndY;
     return Math.abs(touchEndX - touchStartX) > Math.abs(touchEndY - touchStartY)

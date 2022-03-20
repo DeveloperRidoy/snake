@@ -15,7 +15,7 @@ export const settingsUpdateBtn = document.getElementById('settings-update-btn')
 
 // variables
 export const GRID_SIZE = 21;
-export const SNAKE_SPEED = Number(localStorage.getItem('snake-speed')) || 5;
+export const SNAKE_SPEED = Number(localStorage.getItem('snake-speed')) || 7;
 export const HIGH_SCORE = Number(localStorage.getItem("high-score")) || 0;
 export const SNAKE_COLOR = localStorage.getItem("snake-color") || "#00AAFF";
 export const FOOD_COLOR = localStorage.getItem("food-color") || "#FFD500";

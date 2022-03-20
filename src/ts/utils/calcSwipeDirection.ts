@@ -1,11 +1,11 @@
-import { Movement, SwipeDirectionProps } from "./types";
+import { Movement, SwipeDirectionProps } from "./types.js";
 
 export default function calcSwipeDirection({
   touchStartX,
   touchEndX,
   touchStartY,
   touchEndY,
-}: SwipeDirectionProps) {
+}: SwipeDirectionProps): Movement {
   return Math.abs(touchEndX - touchStartX) > Math.abs(touchEndY - touchStartY)
     ? touchEndX > touchStartX
       ? Movement.RIGHT
