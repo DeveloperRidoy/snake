@@ -38,6 +38,10 @@ export default function settingsInput(game: Game) {
 }
 
 function updateSettings(game: Game) {
+  // handle invalid settings 
+  
+
+  // update settings 
   game.settings = {
     ...game.settings,
     snakeSpeed: Number(snakeSpeedInput.value),

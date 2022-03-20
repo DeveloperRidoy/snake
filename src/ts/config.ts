@@ -20,3 +20,4 @@ export const HIGH_SCORE = Number(localStorage.getItem("high-score")) || 0;
 export const SNAKE_COLOR = localStorage.getItem("snake-color") || "#00AAFF";
 export const FOOD_COLOR = localStorage.getItem("food-color") || "#FFD500";
 export const SNAKE_GROWTH_RATE = Number(localStorage.getItem("snake-growth-rate")) || 1;
+export const SWIPE_THRESHHOLD = 100;

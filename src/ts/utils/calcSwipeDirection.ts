@@ -1,3 +1,4 @@
+import { SWIPE_THRESHHOLD } from "../config.js";
 import { Movement, SwipeDirectionProps } from "./types.js";
 
 export default function calcSwipeDirection({
@@ -5,8 +6,11 @@ export default function calcSwipeDirection({
   touchEndX,
   touchStartY,
   touchEndY,
-}: SwipeDirectionProps): Movement {
-  return Math.abs(touchEndX - touchStartX) > Math.abs(touchEndY - touchStartY)
+}: SwipeDirectionProps): Movement | null {
+  const movementX = Math.abs(touchEndX - touchStartX);
+  const movementY = Math.abs(touchEndY - touchStartY);
+  if (movementX < SWIPE_THRESHHOLD && movementY < SWIPE_THRESHHOLD) return null;
+  return movementX > movementY
     ? touchEndX > touchStartX
       ? Movement.RIGHT
       : Movement.LEFT
