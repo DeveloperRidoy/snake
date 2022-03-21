@@ -195,11 +195,11 @@ body {
     font-size: var(--mobile-font-size);
   }
   #game-board {
-    width: 98vmin;
-    height: 98vmin;
+    width: 90vmin;
+    height: 90vmin;
   }
   #settings-menu {
-    width: 98vmin;
+    width: 90vmin;
   }
 }
 
