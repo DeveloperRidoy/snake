@@ -23,6 +23,7 @@ html {
 body {
   height: 100%;
   width: 100%;
+  position: fixed;
   overflow:hidden;
   -webkit-overflow-scrolling: hidden;
   /* iOS velocity scrolling */
