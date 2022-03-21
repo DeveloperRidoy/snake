@@ -17,13 +17,14 @@
 html {
   overflow: hidden;
   width: 100%;
+  height: 100%;
 }
 
 body {
   height: 100%;
   width: 100%;
-  position: fixed;
-  -webkit-overflow-scrolling: touch;
+  overflow:hidden;
+  -webkit-overflow-scrolling: hidden;
   /* iOS velocity scrolling */
   display: flex;
   align-items: center;
