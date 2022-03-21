@@ -201,6 +201,12 @@ body {
   #settings-menu {
     width: 90vmin;
   }
+
+  .menu-section div {
+    display: grid;
+    justify-items: center;
+  }
+
 }
 
 /* utility classes */
