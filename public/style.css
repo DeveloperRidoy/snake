@@ -14,15 +14,11 @@
   font-size: var(--font-size);
 }
 
-html {
-  overflow: hidden;
-  width: 100%;
-}
+
 
 body {
-  height: 100%;
-  width: 100%;
   position: fixed;
+  inset: 0;
   -webkit-overflow-scrolling: touch;
   /* iOS velocity scrolling */
   display: flex;
